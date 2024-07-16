@@ -1,0 +1,43 @@
+.container {
+  border-collapse: collapse;
+  margin: 3rem auto;
+  font-size: 0.9em;
+  font-family: sans-serif;
+  min-width: 400px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.container thead tr {
+  background-color: #282c34;
+  color: #ffffff;
+  text-align: center;
+}
+
+.container thead tr td {
+  padding: 1rem;
+}
+
+.container th,
+td {
+  padding: 15px;
+}
+
+.container tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+.container tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.container tbody tr:last-of-type {
+  border-bottom: 2px solid #009879;
+}
+
+.row {
+  text-align: center;
+}
+
+.row:hover {
+  background-color: #dddddd;
+}
