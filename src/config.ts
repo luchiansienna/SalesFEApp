@@ -1,8 +1,11 @@
+
+const API_URL = process.env.REACT_APP_API_URL || '';
+
 const config = {
-  baseUrl: process.env.REACT_APP_API_URL,
-  salesEndpoint: `${process.env.REACT_APP_API_URL}/sales`,
-  summaryEndpoint: `${process.env.REACT_APP_API_URL}/sales/summary`,
-  typesEndpoint: `${process.env.REACT_APP_API_URL}/sales/types`,
+  baseUrl: API_URL,
+  salesEndpoint: `${API_URL}/sales`,
+  summaryEndpoint: `${API_URL}/sales/summary`,
+  typesEndpoint: `${API_URL}/sales/types`,
 };
 
 export default config;
