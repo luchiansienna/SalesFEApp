@@ -7,6 +7,10 @@
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 
+.container table {
+  width: 100%;
+}
+
 .container thead tr {
   background-color: #282c34;
   color: #ffffff;
