@@ -19,7 +19,6 @@ export const useGetSalesSummary = ({
   const [summary, setSummary] = useState<Summary>({ totalRevenue: 0, totalUnitsSold: 0, totalManufacturingCost: 0, totalProfit: 0, totalPerMonth: [], productsSold: [] });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
-  console.log('summary', summary);
   useEffect(() => {
     setIsLoading(true);
     setError(null);
@@ -36,9 +35,6 @@ export const useGetSalesSummary = ({
       .get(url)
       .then((response) => {
         setSummary(response.data);
-        
-        console.log(response.data);
-        console.log(summary);
       })
       .catch((err) => {
         setError(err);
