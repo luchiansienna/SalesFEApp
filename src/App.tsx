@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useFetchSales } from './hooks/useFetchSales';
 import { useGetSalesSummary } from './hooks/useGetSalesSummary';
 import { useGetTypes } from './hooks/useGetTypes';
 import Summary from './components/Summary/Summary';
-import SalesChart from './components/SalesChart/SalesChart';
 import LoadingSpinner from './components/LoadingSpinner/LoadingSpinner';
 import FilterPanel from './components/FilterPanel/FilterPanel';
 import './App.css';
@@ -18,7 +17,7 @@ function App() {
   const [selectedCountry, setSelectedCountry] = useState<string>('');
   const [selectedProduct, setSelectedProduct] = useState<string>('');
   const [selectedDiscountBand, setSelectedDiscountBand] = useState<string>('');
-
+  
   const { types, isLoading: isLoadingTypes } = useGetTypes();
   const { sales, isLoading: isLoadingSales, noOfPages, error: salesError } = useFetchSales({
     currentPage,
