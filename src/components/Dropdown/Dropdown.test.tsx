@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import Dropdown from './Dropdown';
 
@@ -48,12 +47,14 @@ describe('Dropdown Component', () => {
         options={mockOptions}
         value=""
         onChange={mockOnChange}
+        label="Test Label"
       />
     );
 
     const dropdown = screen.getByText('Select an option');
     fireEvent.click(dropdown);
 
+    expect(screen.getByText('All Test Label')).toBeInTheDocument();
     expect(screen.getByText('Option 1')).toBeInTheDocument();
     expect(screen.getByText('Option 2')).toBeInTheDocument();
     expect(screen.getByText('Option 3')).toBeInTheDocument();
@@ -75,21 +76,21 @@ describe('Dropdown Component', () => {
     expect(mockOnChange).toHaveBeenCalledWith('option2');
   });
 
-  it('closes dropdown when clicking outside', () => {
+  it('calls onChange with empty string when "All" option is clicked', () => {
     render(
       <Dropdown
         options={mockOptions}
-        value=""
+        value="option1"
         onChange={mockOnChange}
+        label="Test Label"
       />
     );
 
-    const dropdown = screen.getByText('Select an option');
+    const dropdown = screen.getByText('Option 1');
     fireEvent.click(dropdown);
-    expect(screen.getByText('Option 1')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('All Test Label'));
 
-    fireEvent.click(document.body);
-    expect(screen.queryByText('Option 1')).not.toBeInTheDocument();
+    expect(mockOnChange).toHaveBeenCalledWith('');
   });
 
   it('applies custom className when provided', () => {
@@ -105,4 +106,72 @@ describe('Dropdown Component', () => {
     const container = screen.getByText('Select an option').parentElement?.parentElement;
     expect(container).toHaveClass('custom-class');
   });
+
+  it('closes dropdown after selecting an option', () => {
+    render(
+      <Dropdown
+        options={mockOptions}
+        value=""
+        onChange={mockOnChange}
+      />
+    );
+
+    const dropdown = screen.getByText('Select an option');
+    fireEvent.click(dropdown);
+    expect(screen.getByText('All')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByText('Option 1'));
+    expect(screen.queryByText('All')).not.toBeInTheDocument();
+  });
+
+  it('toggles dropdown when clicking the same element', () => {
+    render(
+      <Dropdown
+        options={mockOptions}
+        value=""
+        onChange={mockOnChange}
+      />
+    );
+
+    const dropdown = screen.getByText('Select an option');
+    
+    // Open dropdown
+    fireEvent.click(dropdown);
+    expect(screen.getByText('All')).toBeInTheDocument();
+    
+    // Close dropdown
+    fireEvent.click(dropdown);
+    expect(screen.queryByText('All')).not.toBeInTheDocument();
+  });
+
+  it('handles empty options array', () => {
+    render(
+      <Dropdown
+        options={[]}
+        value=""
+        onChange={mockOnChange}
+        label="Test Label"
+      />
+    );
+
+    const dropdown = screen.getByText('Select an option');
+    fireEvent.click(dropdown);
+
+    expect(screen.getByText('All Test Label')).toBeInTheDocument();
+    expect(screen.queryByText('Option 1')).not.toBeInTheDocument();
+  });
+
+  it('displays placeholder when no value is selected', () => {
+    render(
+      <Dropdown
+        options={mockOptions}
+        value=""
+        onChange={mockOnChange}
+        placeholder="Custom placeholder"
+      />
+    );
+
+    expect(screen.getByText('Custom placeholder')).toBeInTheDocument();
+  });
+
 }); 
