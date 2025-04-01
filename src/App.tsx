@@ -1,7 +1,7 @@
-import { useState } from "react";
 import { useFetchSales } from "./hooks/useFetchSales";
 import { useGetSalesSummary } from "./hooks/useGetSalesSummary";
 import { useGetTypes } from "./hooks/useGetTypes";
+import { useFilterHandlers } from "./hooks/useFilterHandlers";
 import Summary from "./components/Summary/Summary";
 import LoadingSpinner from "./components/LoadingSpinner/LoadingSpinner";
 import FilterPanel from "./components/FilterPanel/FilterPanel";
@@ -10,13 +10,19 @@ import List from "./components/List/List";
 import Pagination from "./components/Pagination/Pagination";
 
 function App() {
-  const [currentPage, setCurrentPage] = useState(0);
   const pageSize = 10;
-
-  const [selectedSegment, setSelectedSegment] = useState<string>("");
-  const [selectedCountry, setSelectedCountry] = useState<string>("");
-  const [selectedProduct, setSelectedProduct] = useState<string>("");
-  const [selectedDiscountBand, setSelectedDiscountBand] = useState<string>("");
+  const {
+    selectedSegment,
+    selectedCountry,
+    selectedProduct,
+    selectedDiscountBand,
+    handleSegmentChange,
+    handleCountryChange,
+    handleProductChange,
+    handleDiscountBandChange,
+    setCurrentPage,
+    currentPage
+  } = useFilterHandlers();
 
   const { types, isLoading: isLoadingTypes } = useGetTypes();
   const {
@@ -32,6 +38,7 @@ function App() {
     selectedProduct,
     selectedDiscountBand,
   });
+  
   const {
     summary,
     isLoading: isLoadingSummary,
@@ -42,6 +49,7 @@ function App() {
     selectedProduct,
     selectedDiscountBand,
   });
+
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   if (isLoadingTypes) {
@@ -63,10 +71,10 @@ function App() {
           selectedCountry={selectedCountry}
           selectedProduct={selectedProduct}
           selectedDiscountBand={selectedDiscountBand}
-          onSegmentChange={setSelectedSegment}
-          onCountryChange={setSelectedCountry}
-          onProductChange={setSelectedProduct}
-          onDiscountBandChange={setSelectedDiscountBand}
+          onSegmentChange={handleSegmentChange}
+          onCountryChange={handleCountryChange}
+          onProductChange={handleProductChange}
+          onDiscountBandChange={handleDiscountBandChange}
         />
         {isLoadingSummary ? (
           <LoadingSpinner />
