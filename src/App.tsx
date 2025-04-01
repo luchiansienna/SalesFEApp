@@ -1,54 +1,86 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-import List from "./components/List/List";
-import Pagination from "./components/Pagination/Pagination";
-
-import "./App.css";
-import { Sale } from "./domain/Sale";
+import React, { useState } from 'react';
+import { useFetchSales } from './hooks/useFetchSales';
+import { useGetSalesSummary } from './hooks/useGetSalesSummary';
+import { useGetTypes } from './hooks/useGetTypes';
+import Summary from './components/Summary/Summary';
+import SalesChart from './components/SalesChart/SalesChart';
+import LoadingSpinner from './components/LoadingSpinner/LoadingSpinner';
+import FilterPanel from './components/FilterPanel/FilterPanel';
+import './App.css';
+import List from './components/List/List';
+import Pagination from './components/Pagination/Pagination';
 
 function App() {
-  const [sales, setSales] = useState<Sale[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
-  const [noOfPages, setNoOfPages] = useState(0);
-  const [pageSize] = useState(10);
+  const pageSize = 10;
 
-  useEffect(() => {
-    setIsLoading(true);
-    axios
-      .get(
-        process.env.REACT_APP_SERVICE_URI
-          ? process.env.REACT_APP_SERVICE_URI.replace(
-              "{pageIndex}",
-              currentPage.toString()
-            ).replace("{pageSize}", pageSize.toString())
-          : ""
-      )
-      .then((response) => {
-        setNoOfPages(Math.floor((response.data.count - 1) / pageSize) + 1);
-        setSales(response.data.data);
-        setIsLoading(false);
-      })
-      .catch(() => {
-        setNoOfPages(0);
-        setSales([]);
-        setIsLoading(false);
-      });
-  }, [currentPage, pageSize]);
+  const [selectedSegment, setSelectedSegment] = useState<string>('');
+  const [selectedCountry, setSelectedCountry] = useState<string>('');
+  const [selectedProduct, setSelectedProduct] = useState<string>('');
+  const [selectedDiscountBand, setSelectedDiscountBand] = useState<string>('');
 
+  const { types, isLoading: isLoadingTypes } = useGetTypes();
+  const { sales, isLoading: isLoadingSales, noOfPages, error: salesError } = useFetchSales({
+    currentPage,
+    pageSize,
+    selectedSegment,
+    selectedCountry,
+    selectedProduct,
+    selectedDiscountBand
+  });
+  const { summary, isLoading: isLoadingSummary, error: summaryError } = useGetSalesSummary({
+    selectedSegment,
+    selectedCountry,
+    selectedProduct,
+    selectedDiscountBand
+  });
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
+  if (isLoadingTypes) {
+    return <LoadingSpinner />;
+  }
+
+  if (salesError || summaryError) {
+    return <div>Error: {salesError?.message || summaryError?.message}</div>;
+  }
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Sales App</h1>
+        <h1>Sales Dashboard</h1>
       </header>
-      <List sales={sales} loading={isLoading} />
-      <Pagination
-        noOfPages={noOfPages}
-        pageIndex={currentPage}
-        pageSize={pageSize}
-        paginate={paginate}
-      />
+      <main>
+        <FilterPanel
+          types={types}
+          selectedSegment={selectedSegment}
+          selectedCountry={selectedCountry}
+          selectedProduct={selectedProduct}
+          selectedDiscountBand={selectedDiscountBand}
+          onSegmentChange={setSelectedSegment}
+          onCountryChange={setSelectedCountry}
+          onProductChange={setSelectedProduct}
+          onDiscountBandChange={setSelectedDiscountBand}
+        />
+        {isLoadingSummary ? <LoadingSpinner /> : (
+        <Summary 
+          totalRevenue={summary.totalRevenue}
+          totalUnitsSold={summary.totalUnitsSold}
+          totalProfit={summary.totalProfit}
+          isLoading={isLoadingSummary}
+        />
+        )}
+        {/* <SalesChart sales={sales} /> */}
+        {isLoadingSales ? <LoadingSpinner /> : (
+        <>
+        <List sales={sales} loading={isLoadingSales} />
+        <Pagination
+          noOfPages={noOfPages}
+          pageIndex={currentPage}
+          pageSize={pageSize}
+          paginate={paginate}
+          />
+        </>
+        )}
+      </main>
     </div>
   );
 }
