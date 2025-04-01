@@ -10,11 +10,9 @@ A modern React TypeScript application for displaying and analyzing sales data wi
   - Country filtering
   - Product filtering
   - Discount band filtering
-- 📱 Responsive design for all devices
 - 📄 Paginated data display
 - 🔄 Real-time data updates
 - 🎨 Modern UI with clean design
-- ♿ Accessibility features
 
 ## Tech Stack
 
@@ -32,7 +30,7 @@ A modern React TypeScript application for displaying and analyzing sales data wi
 
 1. Clone the repository:
 ```bash
-git clone [repository-url]
+git clone https://github.com/luchiansienna/SalesFEApp
 cd SalesFEApp
 ```
 
@@ -105,3 +103,33 @@ npm test
 yarn test
 ```
 
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## Best Practices Implemented
+
+- TypeScript for type safety
+- Component-based architecture
+- Custom hooks for logic separation
+- CSS Modules for styling
+- Responsive design
+- Accessibility features
+- Error handling
+- Loading states
+- Performance optimization
+
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- Built with React and TypeScript
+- Styled with CSS Modules
+- API integration with Axios
