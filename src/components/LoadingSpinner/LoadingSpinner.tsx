@@ -3,7 +3,7 @@ import styles from './LoadingSpinner.module.css';
 
 const LoadingSpinner: React.FC = () => {
   return (
-    <div className={styles.spinnerContainer}>
+    <div className={styles.spinnerContainer} data-testid="loading-spinner">
       <svg
         className={styles.spinner}
         viewBox="0 0 50 50"

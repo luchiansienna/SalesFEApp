@@ -8,10 +8,10 @@ test("renders no data to show", () => {
   expect(linkElement).toBeInTheDocument();
 });
 
-test("renders loading when is loading", () => {
+test("renders loading spinner when loading", () => {
   render(<List sales={[]} loading={true} />);
-  const linkElement = screen.getByText(/Loading/i);
-  expect(linkElement).toBeInTheDocument();
+  const spinner = screen.getByTestId('loading-spinner');
+  expect(spinner).toBeInTheDocument();
 });
 
 test("renders data", () => {

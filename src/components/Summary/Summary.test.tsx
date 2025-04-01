@@ -34,9 +34,9 @@ describe('Summary Component', () => {
 
     render(<Summary {...props} />);
 
-    expect(screen.getByText('£0.00')).toBeInTheDocument();
-    expect(screen.getByText('0')).toBeInTheDocument();
-    expect(screen.getByText('£0.00')).toBeInTheDocument();
+    expect(screen.getByTestId('total-revenue')).toHaveTextContent('£0.00');
+    expect(screen.getByTestId('total-units-sold')).toHaveTextContent('0');
+    expect(screen.getByTestId('total-profit')).toHaveTextContent('£0.00');
   });
 
   it('handles large numbers correctly', () => {
