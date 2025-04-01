@@ -9,6 +9,7 @@
 
 .container table {
   width: 100%;
+  border-spacing: 0;
 }
 
 .container thead tr {
@@ -22,7 +23,7 @@
 }
 
 .container th, td {
-  padding: 15px;
+  padding: 1rem;
 }
 
 .container tr {
@@ -39,8 +40,4 @@
 
 .row {
   text-align: center;
-}
-
-.row:hover {
-  background-color: #dddddd;
 }
