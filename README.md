@@ -86,7 +86,6 @@ src/
 - Multiple filter options
 - Combined filtering
 - Real-time updates
-- Reset functionality
 
 ### Data Display
 - Paginated results
